@@ -27,6 +27,7 @@
 #include "transformations/convert_dwsc_to_scaleshifts.hpp"
 #include "transformations/convert_matmul_to_pointwise_convolution.hpp"
 #include "transformations/convert_padded_to_valid_convolution.hpp"
+#include "transformations/aszp_decomposition.hpp"
 #include "transformations/convert_precision.hpp"
 #include "transformations/decompose_2d_convolution.hpp"
 #include "transformations/decompose_mvn.hpp"
@@ -105,6 +106,7 @@ void TransformationsPipeline::apply(const std::shared_ptr<ov::Model>& model,
     manager.register_pass<ov::pass::GRUCellDecomposition>();
     manager.register_pass<ov::pass::LSTMCellDecomposition>();
     manager.register_pass<ov::intel_gna::pass::ConvertDWSCToScaleShifts>();
+    manager.register_pass<ov::intel_gna::pass::AszpDecomposition>();
     manager.register_pass<ov::intel_gna::pass::ConvertPaddedToValidConv>();
     manager.register_pass<ov::intel_gna::pass::Decompose2DConvTransposedWithBiasAF>(config.gnaPrecision);
     manager.register_pass<ov::intel_gna::pass::Decompose2DConvTransposedWithBias>(config.gnaPrecision);
