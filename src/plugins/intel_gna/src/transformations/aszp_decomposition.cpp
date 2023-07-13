@@ -52,7 +52,7 @@ std::shared_ptr<ov::opset11::Reshape> create_reshape(const ov::Output<ov::Node>&
 }
 
 std::shared_ptr<ov::opset11::Constant> create_zero_const(ov::Shape shape) {
-    return ov::opset11::Constant::create(ov::element::i64, shape, std::vector<float>(shape[0] * shape[1], 0.0f));
+    return ov::opset11::Constant::create(ov::element::f32, shape, std::vector<float>(shape[0] * shape[1], 0.0f));
 }
 
 std::shared_ptr<ov::op::v0::Concat> concatenate_zeros(uint64_t pad_begin,

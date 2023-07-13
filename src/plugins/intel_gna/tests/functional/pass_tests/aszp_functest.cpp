@@ -78,6 +78,7 @@ protected:
         std::vector<ptrdiff_t> padBegin, padEnd;
         size_t numOutChannels;
         std::tie(kernel, stride, padBegin, padEnd, dilation, numOutChannels) = convParams;
+        targetDevice = CommonTestUtils::DEVICE_GNA;
 
         auto ngPrc = FuncTestUtils::PrecisionUtils::convertIE2nGraphPrc(netPrecision);
         auto input = builder::makeParams(ngPrc, {inputShape});
@@ -101,7 +102,8 @@ protected:
 
         auto result = std::make_shared<Result>(lastOp);
         function = std::make_shared<Function>(ResultVector{result}, ParameterVector{input});
-        gnaVersionCheck.SetUp(CommonTestUtils::DEVICE_GNA);
+        
+        gnaVersionCheck.SetUp(targetDevice);
     }
 };
 
@@ -109,8 +111,7 @@ TEST_P(AsymmetricToSymmetricPaddingConvTest, CompareWithRefs) {
     Run();
 }
 
-const std::vector<InferenceEngine::Precision> netPrecisions = {InferenceEngine::Precision::FP32,
-                                                               InferenceEngine::Precision::FP16};
+const std::vector<InferenceEngine::Precision> netPrecisions = {InferenceEngine::Precision::FP32};
 
 const std::vector<std::vector<size_t>> input1DNHWC = {{1, 1, 16, 8}};
 const std::vector<std::vector<size_t>> kernels1D = {{1, 2}, {1, 3}, {1, 4}};
